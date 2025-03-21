@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Lineage & AI Analysis</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        #mynetwork { width: 100%; height: 500px; border: 1px solid lightgray; }
+        #explanation { padding: 10px; font-family: Arial, sans-serif; }
+    </style>
+</head>
+<body>
+
+    <h2>📊 SQL Lineage Diagram</h2>
+    <div id="mynetwork"></div>
+
+    <h3>🤖 ContextDiscription </h3>
+    <p id="explanation">{{ explanation }}</p>
+
+    <script>
+        // Fix the property assignment by ensuring correct syntax
+        const nodesData = JSON.parse('{{ nodes | tojson | safe }}');
+        const linksData = JSON.parse('{{ edges | tojson | safe }}');
+
+        // Convert nodes and edges into Vis.js format
+        const visNodes = new vis.DataSet(nodesData.map(id => ({ id, label: id })));
+        const visEdges = new vis.DataSet(linksData.map(link => ({ from: link.from, to: link.to })));
+
+        const container = document.getElementById("mynetwork");
+        const data = { nodes: visNodes, edges: visEdges };
+        const options = {
+            nodes: { shape: 'box', color: '#D2E5FF', font: { size: 14 } },
+            layout: { hierarchical: { direction: 'LR', sortMethod: 'directed' } },
+            physics: false
+        };
+
+        new vis.Network(container, data, options);
+    </script>
+
+</body>
+</html>

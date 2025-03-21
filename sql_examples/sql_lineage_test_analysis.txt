@@ -1,0 +1,35 @@
+📊 SQL Lineage
+Source Tables: ['<default>.customers', '<default>.customer_summary', '<default>.products', '<default>.orders', '<default>.order_items']
+Target Tables: ['<default>.ORDERS', '<default>.PRODUCTS', '<default>.ORDER_ITEMS']
+Intermediate Tables: []
+
+🤖 AI Explanation:
+This SQL code creates a simple database for tracking customers, orders, and products, populates it with sample data, and then runs a few queries. Let's break it down:
+
+**1. Table Creation:**
+
+* **customers:** Stores customer information (ID, name, email, country).
+* **orders:** Stores order information (ID, customer who placed the order, order date, total amount).
+* **products:** Stores product information (ID, name, price).
+* **order_items:** Stores the individual items within each order (ID, order ID, product ID, quantity, subtotal).  This table links orders to the products they contain.
+
+**2. Data Insertion:**
+
+* Sample data is added to each of the tables to represent a few customers, products, and orders.
+
+**3. Queries:**
+
+* **SQL Lineage Testing Query (using CTE):** This query first creates a temporary result set called `customer_orders` by joining the `customers` and `orders` tables.  Then, it joins this temporary result set with `order_items` and `products` to retrieve the customer name, product name, quantity, and subtotal for orders with a total amount greater than $1000.  In simpler terms, it finds out what products were purchased in large orders (over $1000) and by whom.
+
+* **Aggregate sales per country:** This query calculates the total sales amount for each country by joining the `customers` and `orders` tables and summing the `total_amount` for each country.
+
+* **Most purchased product:** This query determines the most popular product by joining `order_items` and `products`, summing the quantities sold for each product, and then sorting in descending order to find the top one.
+
+* **View Creation (customer_summary):** This creates a named view called `customer_summary`. A view is like a saved query.  This particular view summarizes each customer's total number of orders and the total amount they've spent.
+
+* **Test the view:** This query simply selects all data from the newly created `customer_summary` view.
+
+* **Cleanup:** These lines drop the view and tables to reset the database. This is useful for running the script multiple times without errors.
+
+
+In essence, this SQL code sets up a mini e-commerce database schema, populates it with example data, and then demonstrates how to query that data to extract useful information like sales by country, popular products, and customer order summaries.  The use of a Common Table Expression (CTE) and a View are also demonstrated.
